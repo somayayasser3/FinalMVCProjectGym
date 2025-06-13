@@ -1,0 +1,46 @@
+﻿@model List<GymManagementSystem.ViewModels.CoachViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+<h1>Index</h1>
+
+<table class="table table-bordered table-hover " id="InstructorTables">
+    <tr>
+        <td> Name</td>
+        <td>Email </td>
+        <td>Gender</td>
+        <td> Phone Number</td>
+        <td> Specialization </td>
+        <td>Hire Date</td>
+        <td>Salary</td>
+        <td>Experience</td>
+        <td>Image</td>
+        <td>Certification</td>
+
+
+
+
+    </tr>
+    @foreach (CoachViewModel item in Model)
+    {
+        <tr>
+            <td>@item.FullName</td>
+            <td>@item.Email</td>
+            <td>@item.Gender</td>
+            <td>@item.PhoneNumber</td>
+            <td>@item.Specialization</td>
+            <td>@item.HireDate</td>
+            <td>@item.Salary</td>
+            <td>@item.Experience</td>
+            <td>@item.Image</td>
+            <td>@item.Certification</td>
+        </tr>
+
+    }
+</table>
+@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+<a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,24 @@
+## Ignore Visual Studio files
+.vs/
+*.user
+*.suo
+*.dbmdl
+
+## Ignore build output
+bin/
+obj/
+out/
+
+## Ignore packages (if using packages.config)
+packages/
+
+## Ignore Rider IDE files
+.idea/
+
+## Ignore temporary files
+*.log
+*.tmp
+
+## Ignore other
+*.ncrunch*
+*.cache

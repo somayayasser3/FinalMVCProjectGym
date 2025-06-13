@@ -1,0 +1,37 @@
+﻿@model GymManagementSystem.ViewModels.CoachViewModel
+
+
+<h1>MyData</h1>
+
+<table class="table table-bordered table-hover " id="InstructorTables">
+    <tr>
+
+        <td> Name</td>
+        <td>Email </td>
+        <td>Gender</td>
+        <td> Phone Number</td>
+        <td> Specialization </td>
+        <td>Hire Date</td>
+        <td>Salary</td>
+        <td>Experience</td>
+        <td>Image</td>
+        <td>Certification</td>
+
+
+    </tr>
+    <tr>
+        <td>@Model.FullName</td>
+        <td>@Model.Email</td>
+        <td>@Model.Gender</td>
+        <td>@Model.PhoneNumber</td>
+        <td>@Model.Specialization</td>
+        <td>@Model.HireDate</td>
+        <td>@Model.Salary</td>
+        <td>@Model.Experience</td>
+        <td>@Model.Image</td>
+        <td>@Model.Certification</td>
+    </tr>
+</table>
+@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+<a asp-action="Index">Back to List</a>
+</div>
