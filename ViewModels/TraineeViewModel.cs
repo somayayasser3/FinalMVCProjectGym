@@ -1,4 +1,6 @@
-﻿namespace GymManagementSystem.ViewModels
+﻿using System.ComponentModel;
+
+namespace GymManagementSystem.ViewModels
 {
     public class TraineeViewModel
     {

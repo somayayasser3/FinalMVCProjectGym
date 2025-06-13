@@ -1,0 +1,22 @@
+﻿body {
+    background-color: #151515;
+}
+
+header {
+    padding: 20px 15px !important;
+    background-color: rgb(27, 27, 27) !important;
+    box-shadow: 1px 3px 10px;
+}
+
+.data-container {
+    margin-top: 7rem !important;
+}
+
+h1 {
+    color: #f36100 !important;
+}
+
+form
+{
+    color: #a9a9a9;
+}

@@ -1,0 +1,93 @@
+﻿@model GymApp.ViewModels.TraineeEditViewModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<link href="~/css/edittrainee.css" rel="stylesheet" />
+
+<section class="container min-vh-100 py-5">
+    <section class="data-container">
+        <h1 class="mb-3 h1">Trainee</h1>
+
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="ID" />
+
+            <div class="form-group my-3">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control my-2" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-3">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control my-2" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-3">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control my-2" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-3">
+                <label asp-for="Gender" class="control-label"></label>
+                <select asp-for="Gender" class="form-control my-2">
+                    <option value="">gender</option>
+                    <option value="M">male</option>
+                    <option value="F">female</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-3">
+                <label asp-for="JoinDate" class="control-label"></label>
+                <input asp-for="JoinDate" class="form-control my-2" type="date" />
+                <span asp-validation-for="JoinDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-3">
+                <label asp-for="DOB" class="control-label"></label>
+                <input asp-for="DOB" class="form-control my-2" type="date" />
+                <span asp-validation-for="DOB" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-3">
+                <label asp-for="ClassID" class="control-label"></label>
+                <select asp-for="ClassID" class="form-control my-2" asp-items="Model.Classes">
+                    <option value=""> class </option>
+                </select>
+                <span asp-validation-for="ClassID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-3">
+                <label asp-for="CoachID" class="control-label"></label>
+                <select asp-for="CoachID" class="form-control my-2" asp-items="Model.Coaches">
+                    <option value="">Coach</option>
+                </select>
+                <span asp-validation-for="CoachID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-3">
+                <label asp-for="DietPlanID" class="control-label"></label>
+                <select asp-for="DietPlanID" class="form-control my-2" asp-items="Model.DietPlans">
+                    <option value=""> DietPlan </option>
+                </select>
+                <span asp-validation-for="DietPlanID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-3">
+                <label asp-for="MembershipTypeID" class="control-label"></label>
+                <select asp-for="MembershipTypeID" class="form-control my-2" asp-items="Model.Memberships">
+                    <option value=""> subscribtion</option>
+                </select>
+                <span asp-validation-for="MembershipTypeID" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-outline-success d-flex ms-auto">save</button>
+        </form>
+    </section>
+
+</section>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
