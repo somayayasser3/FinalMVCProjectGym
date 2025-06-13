@@ -24,7 +24,6 @@ This is a Gym Management System built using **ASP.NET MVC** with **Entity Framew
 | ASP.NET MVC              | Web development framework                   |
 | Entity Framework (Code First) | ORM for database access             |
 | SQL Server               | Relational database                         |
-| AutoMapper               | Object-to-object mapping                    |
 | Bootstrap 5              | Frontend styling                            |
 | Identity                 | Authentication and Authorization            |
 | LINQ & EF Migrations     | Data querying and schema management         |
