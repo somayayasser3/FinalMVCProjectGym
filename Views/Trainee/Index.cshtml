@@ -1,45 +1,65 @@
-﻿@model List<GymManagementSystem.ViewModels.TraineeViewModel>
+﻿
+@model IEnumerable<GymManagementSystem.Models.Trainee>
 
-@{
-    ViewData["Title"] = "Index";
-    
-}
-
-<h1>Index</h1>
-    
-<table class="table table-bordered table-hover " id="InstructorTables">
-    <tr>
-        <td> Name</td>
-        <td>phone </td>
-        <td>mail</td>
-        <td> gender</td>
-        <td> joinDate </td>
-        <td>dob</td>
-        <td>membership</td>
-        <td>class</td>
-        <td>coach</td>
-        <td>diet</td>
-        
+<link href="css/treinees.css" rel="stylesheet" />
 
 
-    </tr>
-    @foreach (TraineeViewModel item in Model)
-    {
-        <tr>
-            <td>@item.FullName</td>
-            <td>@item.Phone</td>
-            <td>@item.Email</td>
-            <td>@item.Gender</td>
-            <td>@item.JoinDate</td>
-            <td>@item.DOB</td>
-            <td>@item.MembershipTypeID</td>
-            <td>@item.ClassID</td>
-            <td>@item.CoachID</td>
-            <td>@item.DietPlanID</td>
-        </tr>
+<section class="container min-vh-100">
+    <section class="trainees-container">
+        <h1 class="mb-3 h1">Trainees</h1>
 
-    }
-</table>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+        <table class="table table-bordered table-dark table-striped text-center">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Join Date</th>
+                    <th>Class</th>
+                    <th>Coach</th>
+                    <th>Diet Plan</th>
+                    <th>Membership</th>
+                    <th>Edit</th>
+                    <th>InBody</th>
+                    <th>Plan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td>@t.ID</td>
+                        <td>@t.FullName</td>
+                        <td>@t.Phone</td>
+                        <td>@t.Email</td>
+                        <td>@t.Gender</td>
+                        <td>@t.JoinDate?.ToString("yyyy-MM-dd")</td>
+                        <td>@t.Class?.Name</td>
+                        <td>@t.Coach?.FullName</td>
+                        <td>@t.DietPlan?.Title</td>
+                        <td>@t.MembershipType?.Name</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@t.ID" class="btn btn-sm btn-warning">Edit</a>
+                        </td>
+                        <td>
+                            <a asp-action="InBodyDetails" asp-route-id="@t.ID" class="btn btn-sm btn-info">InBody</a>
+                        </td>
+                        <td>
+                            <a asp-action="DietPlanDetails" asp-route-id="@t.ID" class="btn btn-sm btn-success">Plan</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+</section>
+
+<script>
+    window.addEventListener("load", () => {
+        let navItems = document.querySelectorAll(".nav-menu ul li");
+        navItems[1].classList.add("active");
+        console.log(item);
+    })
+</script>

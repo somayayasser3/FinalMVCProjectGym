@@ -85,7 +85,7 @@ namespace GymManagementSystem.Controllers
                     IdentityResult role = await userManager.AddToRoleAsync(user, "Trainee");
                     List<Claim> claims = new List<Claim>();
                     claims.Add(new Claim("Displayname", userFromReq.FullName));
-                    claims.Add(new Claim("Role", "Trainee"));
+                    claims.Add(new Claim("Role", "Admin"));
                     await signInManager.SignInWithClaimsAsync(user, false, claims);
                     return RedirectToAction("Index", "Home");
                 }
