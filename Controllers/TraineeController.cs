@@ -9,21 +9,42 @@ namespace GymManagementSystem.Controllers
 {
     public class TraineeController : Controller
     {
+
         private readonly ITraineeRepository _traineeRepo;
         private readonly GymManagementContext _context;
+        IClassRepository classRepo;
 
-        public TraineeController(ITraineeRepository traineeRepo, GymManagementContext context)
+        public TraineeController(ITraineeRepository traineeRepo, GymManagementContext context , IClassRepository Classrepo)
         {
             _traineeRepo = traineeRepo;
             _context = context;
+            this.classRepo = Classrepo;
         }
-
         public IActionResult Index()
         {
-            var trainees = _traineeRepo.GetAll();
-            return View(trainees);
-        }
+            List<TraineeViewModel> tvm = new List<TraineeViewModel>();
+            List<Trainee> t = _traineeRepo.GetAll();
+            foreach (Trainee trinee in t)
+            {
+                TraineeViewModel tt = new TraineeViewModel()
+                {
+                    Gender = trinee.Gender,
+                    CoachID = trinee.CoachID,
+                    ClassID = trinee.ClassID,
+                    MembershipTypeID = trinee.MembershipTypeID,
+                    DietPlanID = trinee.DietPlanID,
+                    DOB = trinee.DOB,
+                    Email = trinee.Email,
+                    FullName = trinee.FullName,
+                    JoinDate = trinee.JoinDate,
+                    Phone = trinee.Phone
+                };
+                tvm.Add(tt);
+            }
+            return View(tvm);
+       }
 
+        
         public IActionResult Details(int id)
         {
             var trainee = _traineeRepo.GetById(id);
@@ -118,5 +139,93 @@ namespace GymManagementSystem.Controllers
             ViewBag.TraineeName = trainee.FullName;
             return View(trainee.DietPlan);
         }
+        public IActionResult EditClass(int traineeId)
+        {
+            var trainee = _traineeRepo.GetById(traineeId);
+            if (trainee == null) return NotFound();
+
+            var allClasses = classRepo.GetAll(); 
+
+            var vm = new TraineeClassViewModel
+            {
+                TraineeId = trainee.ID,
+                SelectedClassId = trainee.ClassID,
+                AvailableClasses = allClasses
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult EditClass(TraineeClassViewModel model)
+        {
+            var trainee = _traineeRepo.GetById(model.TraineeId);
+            if (trainee == null) return NotFound();
+
+            trainee.ClassID = model.SelectedClassId;
+            _traineeRepo.Update(trainee);
+
+            return RedirectToAction("Index", "Coach");
+        }
+
+        public IActionResult ManageInBody(int traineeId)
+        {
+            var trainee = _traineeRepo.GetById(traineeId);
+            if (trainee == null) return NotFound();
+
+            var latestInBody = trainee.InBodyTests
+                ?.OrderByDescending(x => x.Date)
+                .FirstOrDefault();
+
+            var viewModel = new InbodyViewModel
+            {
+                ID = latestInBody?.ID ?? 0,
+                TraineeID = traineeId,
+                Date = latestInBody?.Date ?? DateOnly.FromDateTime(DateTime.Today),
+                Height = latestInBody?.Height ?? 0,
+                Weight = latestInBody?.Weight ?? 0,
+                Fats = latestInBody?.Fats ?? 0,
+                MuscleMass = latestInBody?.MuscleMass ?? 0,
+                Notes = latestInBody?.Notes
+            };
+
+            return View(viewModel); 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ManageInBody(InbodyViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var trainee = _traineeRepo.GetById(model.TraineeID);
+            if (trainee == null) return NotFound();
+
+            InBodyTest inBody;
+
+            if (model.ID == 0)
+            {
+                inBody = new InBodyTest();
+                _context.InBodyTests.Add(inBody);
+            }
+            else
+            {
+                inBody = _context.InBodyTests.Find(model.ID);
+                if (inBody == null) return NotFound();
+            }
+
+            inBody.TraineeID = model.TraineeID;
+            inBody.Date = model.Date;
+            inBody.Height = model.Height;
+            inBody.Weight = model.Weight;
+            inBody.Fats = model.Fats;
+            inBody.MuscleMass = model.MuscleMass;
+            inBody.Notes = model.Notes;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Coach");
+        }
+
     }
 }

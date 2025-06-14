@@ -1,46 +1,71 @@
-﻿@model List<GymManagementSystem.ViewModels.CoachViewModel>
+﻿@using System.Linq
 
-@{
-    ViewData["Title"] = "Index";
+@model CoachViewModel
+<h2>Coach Profile</h2>
+<div class="card p-3 ">
+    <h4 class="mb-3">@Model.FullName</h4>
+    <p><strong>Phone:</strong> @Model.PhoneNumber</p>
+    <p><strong>Specialization:</strong> @Model.Specialization</p>
+    <p><strong>Hire Date:</strong> @Model.HireDate.ToString()</p>
+    <p><strong>Salary:</strong> @Model.Salary</p>
+    <p><strong>Experience:</strong> @Model.Experience</p>
+</div>
 
+@if (Model.WorkOutPrograms?.Any() == true)
+{
+    <h4 class="mt-4">Programs by this Coach</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var program in Model.WorkOutPrograms)
+            {
+                <tr>
+                    <td>@program.Name</td>
+                    <td>@program.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
-<h1>Index</h1>
-
-<table class="table table-bordered table-hover " id="InstructorTables">
-    <tr>
-        <td> Name</td>
-        <td>Email </td>
-        <td>Gender</td>
-        <td> Phone Number</td>
-        <td> Specialization </td>
-        <td>Hire Date</td>
-        <td>Salary</td>
-        <td>Experience</td>
-        <td>Image</td>
-        <td>Certification</td>
-
-
-
-
-    </tr>
-    @foreach (CoachViewModel item in Model)
-    {
-        <tr>
-            <td>@item.FullName</td>
-            <td>@item.Email</td>
-            <td>@item.Gender</td>
-            <td>@item.PhoneNumber</td>
-            <td>@item.Specialization</td>
-            <td>@item.HireDate</td>
-            <td>@item.Salary</td>
-            <td>@item.Experience</td>
-            <td>@item.Image</td>
-            <td>@item.Certification</td>
-        </tr>
-
-    }
-</table>
-@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-<a asp-action="Index">Back to List</a>
-</div>
+@if (Model?.Trainees != null && Model.Trainees.Any())
+{
+    <h4 class="mt-4">Trainees Assigned to This Coach</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Join Date</th>
+                <th>View/Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var trainee in Model.Trainees)
+            {
+                <tr>
+                    <td>@trainee?.FullName</td>
+                    <td>@trainee?.Phone</td>
+                    <td>@trainee?.Email</td>
+                    <td>@trainee?.Gender</td>
+                    <td>@trainee?.JoinDate.ToString()</td>
+                    <td>
+                        <a href="@Url.Action("Index", "Plan", new { traineeId = trainee?.ID })" class="btn btn-sm btn-outline-primary"> Plan</a>
+                        <a href="@Url.Action("EditClass", "Trainee", new { traineeId = trainee?.ID })" class="btn btn-sm btn-outline-primary">Class</a>
+                        <a href="@Url.Action("ManageInBody", "Trainee", new { traineeId = trainee.ID })" class="btn btn-sm btn-outline-primary"> Inbody </a> </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No trainees assigned.</p>
+}

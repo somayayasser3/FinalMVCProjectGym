@@ -13,28 +13,31 @@ namespace GymManagementSystem.Controllers
             coach = c;
         }
         public IActionResult Index()
-        {
-            List<CoachViewModel> tvm = new List<CoachViewModel>();
-            List<Coach> t = coach.GetAll();
-            foreach (Coach co in t)
+        { 
+
+             //get currrent coach user here
+            string ret = (User.Claims.FirstOrDefault(c => c.Type == "Email")).Value;
+            Coach co = coach.GetAll().FirstOrDefault(c => c.Email == ret);
+            CoachViewModel tt = new CoachViewModel()
             {
-                CoachViewModel tt = new CoachViewModel()
-                {
-                    FullName = co.FullName,
-                    Email = co.Email,
-                    Gender = co.Gender,
-                    PhoneNumber = co.PhoneNumber,
-                    Specialization = co.Specialization,
-                    HireDate = co.HireDate,
-                    Salary = co.Salary,
-                    Experience = co.Experience,
-                    Image = co.Image,
-                    Certification  =co.Certification
-                };
-                tvm.Add(tt);
-            }
-            return View(tvm);
+                FullName = co.FullName,
+                Email = co.Email,
+                Gender = co.Gender,
+                PhoneNumber = co.PhoneNumber,
+                Specialization = co.Specialization,
+                HireDate = co.HireDate,
+                Salary = co.Salary,
+                Experience = co.Experience,
+                Image = co.Image,
+                Certification = co.Certification,
+                Trainees = co.Trainees,
+                WorkOutPrograms = co.WorkOutPrograms,
+            };
+            return View(tt);
+
         }
+
+
 
         public IActionResult MyData()
         {
@@ -54,6 +57,9 @@ namespace GymManagementSystem.Controllers
                 Certification = co.Certification
             };
             return View(tt);
+        
         }
+
+
     }
 }
