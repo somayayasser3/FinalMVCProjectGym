@@ -96,55 +96,55 @@ namespace GymManagementSystem.Controllers
             SetListItemsValues(ref userFromReq);
             return View(userFromReq);
         }
-        public IActionResult Login()
-        {
-            if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel userFromReq)
-        {
-            ApplicationUser userDB = await userManager.FindByEmailAsync(userFromReq.Email);
-            if (userDB != null)
-            {
-                bool ok = await userManager.CheckPasswordAsync(userDB, userFromReq.Password);
-                if (ok)
-                {
-                    // Check if user is actually a Trainee
-                    var isTrainee = await userManager.IsInRoleAsync(userDB, "Trainee");
-                    if (isTrainee)
-                    {
-                        List<Claim> claims = new List<Claim>();
-                        claims.Add(new Claim("Displayname", userDB.DisplayName));
-                        claims.Add(new Claim("Email", userDB.Email));
-                        claims.Add(new Claim("Role", "Trainee"));
+        //public IActionResult Login()
+        //{
+        //    if (User.Identity.IsAuthenticated)
+        //        return RedirectToAction("Index", "Home");
+        //    return View();
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Login(LoginViewModel userFromReq)
+        //{
+        //    ApplicationUser userDB = await userManager.FindByEmailAsync(userFromReq.Email);
+        //    if (userDB != null)
+        //    {
+        //        bool ok = await userManager.CheckPasswordAsync(userDB, userFromReq.Password);
+        //        if (ok)
+        //        {
+        //            // Check if user is actually a Trainee
+        //            var isTrainee = await userManager.IsInRoleAsync(userDB, "Trainee");
+        //            if (isTrainee)
+        //            {
+        //                List<Claim> claims = new List<Claim>();
+        //                claims.Add(new Claim("Displayname", userDB.DisplayName));
+        //                claims.Add(new Claim("Email", userDB.Email));
+        //                claims.Add(new Claim("Role", "Trainee"));
 
-                        await signInManager.SignInWithClaimsAsync(userDB, userFromReq.RememberMe, claims);
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Access denied. Trainee credentials required.");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid credentials");
-                }
-            }
-            else
-            {
-                ModelState.AddModelError("", "Invalid credentials");
-            }
-            return View();
-        }
-        public async Task<IActionResult> Logout()
-        {
-            await signInManager.SignOutAsync();
-            return RedirectToAction("Login");
-        }
+        //                await signInManager.SignInWithClaimsAsync(userDB, userFromReq.RememberMe, claims);
+        //                return RedirectToAction("Index", "Home");
+        //            }
+        //            else
+        //            {
+        //                ModelState.AddModelError("", "Access denied. Trainee credentials required.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("", "Invalid credentials");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError("", "Invalid credentials");
+        //    }
+        //    return View();
+        //}
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await signInManager.SignOutAsync();
+        //    return RedirectToAction("Login");
+        //}
 
         public void SetListItemsValues(ref TraineeSignupViewModel userFromReq)
         {

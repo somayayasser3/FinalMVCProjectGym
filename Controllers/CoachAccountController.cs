@@ -74,6 +74,7 @@ namespace GymManagementSystem.Controllers
 
                     List<Claim> claims = new List<Claim>();
                     claims.Add(new Claim("Displayname", userFromReq.FullName));
+                    claims.Add(new Claim("Email", userFromReq.Email));
                     claims.Add(new Claim("Role", "Coach"));
 
                     await signInManager.SignInWithClaimsAsync(user, false, claims);
@@ -88,54 +89,45 @@ namespace GymManagementSystem.Controllers
             return View(userFromReq);
         }
 
-        public IActionResult Login()
-        {
-            if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
-            return View();
-        }
+        //public IActionResult Login()
+        //{
+        //    if (User.Identity.IsAuthenticated)
+        //        return RedirectToAction("Index", "Home");
+        //    return View();
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel userFromReq)
-        {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser userDB = await userManager.FindByEmailAsync(userFromReq.Email);
-                if (userDB != null)
-                {
-                    bool ok = await userManager.CheckPasswordAsync(userDB, userFromReq.Password);
-                    if (ok)
-                    {
-                        // Check if user is actually a coach
-                        var isCoach = await userManager.IsInRoleAsync(userDB, "Coach");
-                        if (isCoach)
-                        {
-                            List<Claim> claims = new List<Claim>();
-                            claims.Add(new Claim("Displayname", userDB.DisplayName));
-                            claims.Add(new Claim("Email", userDB.Email));
-                            claims.Add(new Claim("Role", "Coach"));
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Login(LoginViewModel userFromReq)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        ApplicationUser userDB = await userManager.FindByEmailAsync(userFromReq.Email);
+        //        if (userDB != null)
+        //        {
+        //            bool ok = await userManager.CheckPasswordAsync(userDB, userFromReq.Password);
+        //            if (ok)
+        //            {
+        //                    List<Claim> claims = new List<Claim>();
+        //                    claims.Add(new Claim("Displayname", userDB.DisplayName));
+        //                    claims.Add(new Claim("Email", userDB.Email));
+        //                    claims.Add(new Claim("Role", "Coach"));
 
-                            await signInManager.SignInWithClaimsAsync(userDB, userFromReq.RememberMe, claims);
-                            return RedirectToAction("Index", "Home");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "Access denied. Coach credentials required.");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Invalid credentials");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid credentials");
-                }
-            }
-            return View();
-        }
+        //                    await signInManager.SignInWithClaimsAsync(userDB, userFromReq.RememberMe, claims);
+        //                    return RedirectToAction("Index", "Home");
+        //            }
+        //            else
+        //            {
+        //                ModelState.AddModelError("", "Invalid credentials");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("", "Invalid credentials");
+        //        }
+        //    }
+        //    return View();
+        //}
 
         public async Task<IActionResult> Logout()
         {
