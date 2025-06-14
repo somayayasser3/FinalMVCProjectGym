@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GymManagementSystem.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GymManagementSystem.ViewModels
@@ -21,5 +22,9 @@ namespace GymManagementSystem.ViewModels
         public string Image { get; set; }
 
         public string Certification { get; set; }
+
+        public virtual ICollection<WorkOutProgram> WorkOutPrograms { get; set; } = new List<WorkOutProgram>();
+        public virtual ICollection<Trainee> Trainees { get; set; } = new List<Trainee>();
+
     }
 }
