@@ -12,11 +12,15 @@ namespace GymManagementSystem.Controllers
         {
             coach = c;
         }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         public IActionResult Index()
-        { 
-
-             //get currrent coach user here
-            string ret = (User.Claims.FirstOrDefault(c => c.Type == "Email")).Value;
+        {
+            if(User.IsInRole("Admin"))
+                return RedirectToAction("AllCoaches");
+            if (!User.IsInRole("Coach"))
+                return RedirectToAction("Index","Home");
+            string ret = (User.Claims.FirstOrDefault(c => c.Type == "Email"))?.Value;
             Coach co = coach.GetAll().FirstOrDefault(c => c.Email == ret);
             CoachViewModel tt = new CoachViewModel()
             {
@@ -36,30 +40,39 @@ namespace GymManagementSystem.Controllers
             return View(tt);
 
         }
-
-
-
-        public IActionResult MyData()
+        public IActionResult AllCoaches()
         {
-            string ret = (User.Claims.FirstOrDefault(c => c.Type == "Email")).Value;
-            Coach co = coach.GetAll().FirstOrDefault(c => c.Email == ret);
-            CoachViewModel tt = new CoachViewModel()
+            if (!User.IsInRole("Admin"))
+                return RedirectToAction("Index", "Home");
+            List<Coach> All = coach.GetAll();
+            List<CoachViewModel> coaches = new List<CoachViewModel>();
+            foreach (var co in All)
+
             {
-                FullName = co.FullName,
-                Email = co.Email,
-                Gender = co.Gender,
-                PhoneNumber = co.PhoneNumber,
-                Specialization = co.Specialization,
-                HireDate = co.HireDate,
-                Salary = co.Salary,
-                Experience = co.Experience,
-                Image = co.Image,
-                Certification = co.Certification
-            };
-            return View(tt);
-        
+                CoachViewModel tt = new CoachViewModel()
+                {
+                    FullName = co.FullName,
+                    Email = co.Email,
+                    Gender = co.Gender,
+                    PhoneNumber = co.PhoneNumber,
+                    Specialization = co.Specialization,
+                    HireDate = co.HireDate,
+                    Salary = co.Salary,
+                    Experience = co.Experience,
+                    Image = co.Image,
+                    Certification = co.Certification,
+                    Trainees = co.Trainees,
+                    WorkOutPrograms = co.WorkOutPrograms,
+                };
+                coaches.Add(tt);
+            }
+       
+            return View(coaches);
         }
 
+        //Edit current coach
+
+        //Edit(id)
 
     }
 }

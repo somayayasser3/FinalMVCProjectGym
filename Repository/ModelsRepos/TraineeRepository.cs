@@ -56,5 +56,16 @@ namespace GymApp.Repository.ModelsRepos
                 _context.SaveChanges();
             }
         }
+
+        public Trainee GetByMail(string mail)
+        {
+            return _context.Trainees
+                .Include(t => t.Coach)
+                .Include(t => t.Class)
+                .Include(t => t.DietPlan)
+                .Include(t => t.MembershipType)
+                .Include(t => t.InBodyTests)
+                .FirstOrDefault(t => t.Email == mail);
+        }
     }
 }

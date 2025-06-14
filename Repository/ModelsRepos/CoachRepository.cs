@@ -29,6 +29,12 @@ namespace GymApp.Repository.ModelsRepos
                 .ToList();
         }
 
+        public List<Coach> GetMyTarainees()
+        {
+            return _context.Coaches.Include(c => c.Trainees).ToList();
+        }
+
+
         public void Add(Coach entity)
         {
             _context.Coaches.Add(entity);
@@ -49,6 +55,13 @@ namespace GymApp.Repository.ModelsRepos
                 _context.Coaches.Remove(entity);
                 _context.SaveChanges();
             }
+        }
+
+        public Coach GetByEmail(string mail)
+        {
+            return _context.Coaches             
+               .Include(c => c.Trainees).ThenInclude(t=>t.DietPlan).Include(c=>c.Trainees).ThenInclude(t=>t.Class)
+               .FirstOrDefault(c => c.Email == mail);
         }
     }
 }
