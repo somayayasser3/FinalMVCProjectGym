@@ -1,4 +1,5 @@
-﻿@model GymManagementSystem.ViewModels.TraineeViewModel
+﻿@* @model GymManagementSystem.ViewModels.TraineeViewModel *@
+@model GymManagementSystem.Models.Trainee
 
 
     <h1>MyData</h1>
@@ -32,6 +33,6 @@
                 <td>@Model.DietPlanID</td>
             </tr>
     </table>
-@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+@Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
     <a asp-action="Index">Back to List</a>
 </div>

@@ -85,8 +85,17 @@
                     <nav class="nav-menu">
                         <ul>
                             <li class="active"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li class="active"><a asp-controller="Home" asp-action="Index">@User.Claims.FirstOrDefault(c => c.Type == "Role")?.Value</a></li>
-                            <li><a asp-controller="Trainee" asp-action="Index">Trainees</a></li>
+                            <li ><p >@User.Claims.FirstOrDefault(c => c.Type == "Role")?.Value</p></li>
+                            @if (!User.IsInRole("Trainee"))
+                            {
+                                <li><a asp-controller="Trainee" asp-action="Index">Trainees</a></li>
+                            }
+
+                            else
+                            {
+                                <li><a asp-controller="Trainee" asp-action="Index">My Profile</a></li>
+                            }
+
                             <li><a href="./class-details.html">Classes</a></li>
                             <li><a href="./services.html">Services</a></li>
                             <li><a href="./team.html">Our Team</a></li>

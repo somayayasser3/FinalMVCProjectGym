@@ -16,12 +16,16 @@
                     <th>Phone</th>
                     <th>Email</th>
                     <th>Gender</th>
+                    @if (User.IsInRole("Admin"))
+                    {
                     <th>Join Date</th>
-                    <th>Class</th>
                     <th>Coach</th>
-                    <th>Diet Plan</th>
                     <th>Membership</th>
                     <th>Edit</th>
+
+                    }
+                    <th>Class</th>
+                    <th>Diet Plan</th>
                     <th>InBody</th>
                     <th>Plan</th>
                 </tr>
@@ -35,14 +39,19 @@
                         <td>@t.Phone</td>
                         <td>@t.Email</td>
                         <td>@t.Gender</td>
-                        <td>@t.JoinDate?.ToString("yyyy-MM-dd")</td>
-                        <td>@t.Class?.Name</td>
+                        @if (User.IsInRole("Admin"))
+                        {<td>@t.JoinDate?.ToString("yyyy-MM-dd")</td>
                         <td>@t.Coach?.FullName</td>
+                         <td>@t.MembershipType?.Name</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@t.ID" class="btn btn-sm btn-warning">Edit</a>
+                            </td>
+                      
+                       
+                        }
+                        <td>@t.Class?.Name</td>
+
                         <td>@t.DietPlan?.Title</td>
-                        <td>@t.MembershipType?.Name</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@t.ID" class="btn btn-sm btn-warning">Edit</a>
-                        </td>
                         <td>
                             <a asp-action="InBodyDetails" asp-route-id="@t.ID" class="btn btn-sm btn-info">InBody</a>
                         </td>

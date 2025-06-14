@@ -13,38 +13,44 @@ namespace GymManagementSystem.Controllers
         private readonly ITraineeRepository _traineeRepo;
         private readonly GymManagementContext _context;
         IClassRepository classRepo;
+        ICoachRepository coachRepo;
 
-        public TraineeController(ITraineeRepository traineeRepo, GymManagementContext context , IClassRepository Classrepo)
+        public TraineeController(ITraineeRepository traineeRepo, ICoachRepository coach, GymManagementContext context , IClassRepository Classrepo)
         {
             _traineeRepo = traineeRepo;
             _context = context;
             this.classRepo = Classrepo;
+            coachRepo = coach;
         }
         public IActionResult Index()
         {
-            List<TraineeViewModel> tvm = new List<TraineeViewModel>();
-            List<Trainee> t = _traineeRepo.GetAll();
-            foreach (Trainee trinee in t)
+            if (User.IsInRole("Admin"))
             {
-                TraineeViewModel tt = new TraineeViewModel()
-                {
-                    Gender = trinee.Gender,
-                    CoachID = trinee.CoachID,
-                    ClassID = trinee.ClassID,
-                    MembershipTypeID = trinee.MembershipTypeID,
-                    DietPlanID = trinee.DietPlanID,
-                    DOB = trinee.DOB,
-                    Email = trinee.Email,
-                    FullName = trinee.FullName,
-                    JoinDate = trinee.JoinDate,
-                    Phone = trinee.Phone
-                };
-                tvm.Add(tt);
+                var trainees = _traineeRepo.GetAll();
+                return View(trainees);
             }
-            return View(tvm);
-       }
 
-        
+            if (User.IsInRole("Coach"))
+            {
+                string ret = (User.Claims.FirstOrDefault(c => c.Type == "Email"))?.Value;
+
+                Coach c = coachRepo.GetByEmail(ret);
+                    return View(c.Trainees);
+            }
+
+            else
+            {
+                string ret = (User.Claims.FirstOrDefault(c => c.Type == "Email"))?.Value;
+                List<Trainee> l = new List<Trainee>();
+                l.Add(_traineeRepo.GetByMail(ret));
+                //return View(l);
+                return RedirectToAction("Details",new { id = _traineeRepo.GetByMail(ret).ID });
+            }
+
+             
+
+        }
+
         public IActionResult Details(int id)
         {
             var trainee = _traineeRepo.GetById(id);
@@ -226,6 +232,9 @@ namespace GymManagementSystem.Controllers
 
             return RedirectToAction("Index", "Coach");
         }
+
+
+        //Delete
 
     }
 }
