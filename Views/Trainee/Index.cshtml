@@ -28,6 +28,10 @@
                     <th>Diet Plan</th>
                     <th>InBody</th>
                     <th>Plan</th>
+                    @if (User.IsInRole("Coach"))
+                    {
+                        <th>Class</th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -52,13 +56,36 @@
                         <td>@t.Class?.Name</td>
 
                         <td>@t.DietPlan?.Title</td>
-                        <td>
-                            <a asp-action="InBodyDetails" asp-route-id="@t.ID" class="btn btn-sm btn-info">InBody</a>
-                        </td>
-                        <td>
-                            <a asp-action="DietPlanDetails" asp-route-id="@t.ID" class="btn btn-sm btn-success">Plan</a>
-                        </td>
-                    </tr>
+
+                        @if (User.IsInRole("Coach"))
+                        {
+                            <td>
+                                <a asp-action="ManageInBody" asp-controller="Trainee" asp-route-id="@t.ID" class="btn btn-sm btn-info">InBody</a>
+                            </td>
+
+                        }
+                        else
+                        {
+                            <td>
+                                <a asp-action="InBodyDetails" asp-route-id="@t.ID" class="btn btn-sm btn-info">InBody</a>
+                            </td>
+                        }
+
+
+                        @if(User.IsInRole("Coach")){
+                            <td>
+                                <a asp-action="Index" asp-controller="Plan" asp-route-id="@t.ID" class="btn btn-sm btn-success">Plan</a>
+                            </td>
+                            <td>
+                                <a asp-action="EditClass" asp-controller="Trainee" asp-route-id="@t.ID" class="btn btn-sm btn-success">Class</a>
+                            </td>
+                      }else
+                        {
+                             <td>
+                                <a asp-action="DietPlanDetails" asp-route-id="@t?.ID" class="btn btn-sm btn-success">Plan</a>
+                             </td>
+                        }
+                          </tr>
                 }
             </tbody>
         </table>

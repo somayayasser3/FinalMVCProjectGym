@@ -1,75 +1,36 @@
-﻿@model List<GymManagementSystem.ViewModels.CoachViewModel>
-
-@{
-    ViewData["Title"] = "AllCoaches";
-}
-
-<h1>AllCoaches</h1>
-
-<div>
-    <h4>CoachViewModel</h4>
-    <hr />
-    @foreach (CoachViewModel c in Model)
-    {
-        <dl class="row">
-            <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => c.FullName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => c.FullName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => c.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => c.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => c.Gender)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => c.Gender)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => c.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => c.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => c.Specialization)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => c.Specialization)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => c.Salary)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => c.Salary)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => c.Experience)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => c.Experience)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => c.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => c.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => c.Certification)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => c.Certification)
-        </dd>
-    </dl>
-    }
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+﻿<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Specialization</th>
+            <th>Salary</th>
+            <th>Experience</th>
+            <th>Image</th>
+            <th>Certification</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.FullName</td>
+                <td>@c.Email</td>
+                <td>@c.Gender</td>
+                <td>@c.PhoneNumber</td>
+                <td>@c.Specialization</td>
+                <td>@c.Salary</td>
+                <td>@c.Experience</td>
+                <td>@c.Image</td>
+                <td>@c.Certification</td>
+                <td>
+                    <a asp-action="Edit" asp-controller="Coach" asp-route-id="@c.ID" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-controller="Coach" asp-route-id="@c.ID" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

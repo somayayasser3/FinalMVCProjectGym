@@ -145,6 +145,8 @@ namespace GymManagementSystem.Controllers
             ViewBag.TraineeName = trainee.FullName;
             return View(trainee.DietPlan);
         }
+      
+        [Route("Trainee/EditClass/{traineeId}")]
         public IActionResult EditClass(int traineeId)
         {
             var trainee = _traineeRepo.GetById(traineeId);
@@ -163,6 +165,8 @@ namespace GymManagementSystem.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Trainee/EditClass/{traineeId}")]
         public IActionResult EditClass(TraineeClassViewModel model)
         {
             var trainee = _traineeRepo.GetById(model.TraineeId);
@@ -171,8 +175,9 @@ namespace GymManagementSystem.Controllers
             trainee.ClassID = model.SelectedClassId;
             _traineeRepo.Update(trainee);
 
-            return RedirectToAction("Index", "Coach");
+            return RedirectToAction("Index", "Trainee");
         }
+        [Route("Trainee/ManageInBody/{traineeId}")]
 
         public IActionResult ManageInBody(int traineeId)
         {
@@ -199,6 +204,8 @@ namespace GymManagementSystem.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Trainee/ManageInBody/{traineeId}")]
+
         public IActionResult ManageInBody(InbodyViewModel model)
         {
             if (!ModelState.IsValid)
@@ -230,7 +237,7 @@ namespace GymManagementSystem.Controllers
 
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Coach");
+            return RedirectToAction("Index", "Trainee");
         }
 
 
