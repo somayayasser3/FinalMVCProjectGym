@@ -163,8 +163,7 @@ namespace GymManagementSystem.Controllers
             userFromReq.DietPlanTypes = dietPlan.GetAll().Select(
                     m => new SelectListItem
                     {
-                        Value = m.ID.ToString(),
-                        Text = m.Title.ToString()
+                        Value = m.ID.ToString(),                        Text = m.Title.ToString()
                     }
                     ).ToList();
             userFromReq.Classes = classs.GetAll().Select(
