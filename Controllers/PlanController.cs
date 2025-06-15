@@ -16,6 +16,7 @@ namespace GymManagementSystem.Controllers
         }
 
         // show each trainee's plan by coach in profile 
+        [Route("Plan/Index/{traineeId}")]
         public IActionResult Index(int traineeId)
         {
             var trainee = traineerepo.GetById(traineeId);
@@ -44,7 +45,7 @@ namespace GymManagementSystem.Controllers
 
             repo.Update(existingPlan); 
 
-            return RedirectToAction("Index","Coach");
+            return RedirectToAction("Index","Trainee");
         }
         
     }

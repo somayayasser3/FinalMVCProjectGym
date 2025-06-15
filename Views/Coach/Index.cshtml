@@ -3,8 +3,12 @@
 @model CoachViewModel
 <h2>Coach Profile</h2>
 <div class="card p-3 ">
+    <a asp-action="Edit" asp-controller="Coach" asp-route-id="@Model.ID" class="btn btn-sm btn-success">Edit Profile</a>
+
     <h4 class="mb-3">@Model.FullName</h4>
+    <p><strong>Email:</strong> @Model.Email</p>
     <p><strong>Phone:</strong> @Model.PhoneNumber</p>
+    <p><strong>Gender:</strong> @Model.Gender</p>
     <p><strong>Specialization:</strong> @Model.Specialization</p>
     <p><strong>Hire Date:</strong> @Model.HireDate.ToString()</p>
     <p><strong>Salary:</strong> @Model.Salary</p>
@@ -33,39 +37,3 @@
     </table>
 }
 
-@if (Model?.Trainees != null && Model.Trainees.Any())
-{
-    <h4 class="mt-4">Trainees Assigned to This Coach</h4>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Full Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Gender</th>
-                <th>Join Date</th>
-                <th>View/Edit</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var trainee in Model.Trainees)
-            {
-                <tr>
-                    <td>@trainee?.FullName</td>
-                    <td>@trainee?.Phone</td>
-                    <td>@trainee?.Email</td>
-                    <td>@trainee?.Gender</td>
-                    <td>@trainee?.JoinDate.ToString()</td>
-                    <td>
-                        <a href="@Url.Action("Index", "Plan", new { traineeId = trainee?.ID })" class="btn btn-sm btn-outline-primary"> Plan</a>
-                        <a href="@Url.Action("EditClass", "Trainee", new { traineeId = trainee?.ID })" class="btn btn-sm btn-outline-primary">Class</a>
-                        <a href="@Url.Action("ManageInBody", "Trainee", new { traineeId = trainee.ID })" class="btn btn-sm btn-outline-primary"> Inbody </a> </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p class="text-muted">No trainees assigned.</p>
-}
